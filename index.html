@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gestione Dipendenti</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --background: #f5f6fa;
+            --text: #2c3e50;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav a:hover {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .form-section {
+            border-bottom: 1px solid #eee;
+            padding: 1.5rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-section h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #eee;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        button {
+            background: var(--secondary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: var(--primary);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+
+        canvas#firma {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            margin: 1rem 0;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+            }
+            
+            .section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-users"></i>
+            <h1>Sistema Gestione Dipendenti</h1>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#" onclick="showSection('anagrafica')"><i class="fas fa-user"></i> Anagrafica</a>
+        <a href="#" onclick="showSection('preassunzione')"><i class="fas fa-file-signature"></i> Pre-assunzione</a>
+        <a href="#" onclick="showSection('documenti')"><i class="fas fa-folder"></i> Documenti</a>
+        <a href="#" onclick="showSection('panorama')"><i class="fas fa-chart-bar"></i> Panoramica</a>
+        <a href="#" onclick="showSection('cv')"><i class="fas fa-file-alt"></i> CV</a>
+    </nav>
+
+    <div id="anagrafica" class="section active">
+        <div class="card">
+            <form id="anagraficaForm">
+                <!-- Dati Personali -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Dati Personali</h3>
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cognome:</label>
+                        <input type="text" name="cognome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data di Nascita:</label>
+                        <input type="date" name="dataNascita" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Codice Fiscale:</label>
+                        <input type="text" name="codiceFiscale" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefono:</label>
+                        <input type="tel" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" name="email" required>
+                    </div>
+                </div>
+
+                <!-- Residenza -->
+                <div class="form-section">
+                    <h3><i class="fas fa-home"></i> Residenza</h3>
+                    <div class="form-group">
+                        <label>Via/Piazza:</label>
+                        <input type="text" name="via" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Numero:</label>
+                        <input type="text" name="numero" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Comune:</label>
+                        <input type="text" name="comune" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CAP:</label>
+                        <input type="text" name="cap" required>
+                    </div>
+                </div>
+
+                <!-- Informazioni Lavorative -->
+                <div class="form-section">
+                    <h3><i class="fas fa-briefcase"></i> Informazioni Lavorative</h3>
+                    <div class="form-group">
+                        <label>Data Inizio Impiego:</label>
+                        <input type="date" name="dataInizio" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo Contratto:</label>
+                        <select name="tipoContratto" required>
+                            <option value="">Seleziona</option>
+                            <option value="determinato">Determinato</option>
+                            <option value="indeterminato">Indeterminato (periodo di prova 6 mesi)</option>
+                        </select>
+                    </div>
+                    <div id="durataDeterminato" class="form-group" style="display: none;">
+                        <label>Durata (mesi):</label>
+                        <input type="number" name="durataContratto">
+                    </div>
+                    <div class="form-group">
+                        <label>Giorni Lavorativi:</label>
+                        <select name="giorniLavorativi" required>
+                            <option value="lunVen">Lunedì-Venerdì (2 giorni riposo)</option>
+                            <option value="lunDom2">Lunedì-Domenica (2 giorni riposo)</option>
+                            <option value="lunDom1">Lunedì-Domenica (1 giorno riposo)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ferie:</label>
+                        <select name="ferie" required>
+                            <option value="contratto">Secondo contratto</option>
+                            <option value="no">Senza ferie</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Permessi:</label>
+                        <select name="permessi" required>
+                            <option value="contratto">Secondo contratto</option>
+                            <option value="no">Senza permessi</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Informazioni Aggiuntive -->
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Informazioni Aggiuntive</h3>
+                    <div class="form-group">
+                        <label>Luogo di Lavoro:</label>
+                        <input type="text" name="luogoLavoro" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsabile:</label>
+                        <input type="text" name="responsabile" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrizione Contratto:</label>
+                        <textarea name="descrizioneContratto" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrizione Posizione:</label>
+                        <textarea name="descrizionePosizione" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Salario Netto Orario (€):</label>
+                        <input type="number" step="0.01" name="salarioOrario" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Salario Netto Giornaliero (€):</label>
+                        <input type="number" step="0.01" name="salarioGiornaliero" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Salario Netto Mensile (€):</label>
+                        <input type="number" step="0.01" name="salarioMensile" required>
+                    </div>
+                </div>
+
+                <!-- Documenti Richiesti -->
+                <div class="form-section">
+                    <h3><i class="fas fa-file-alt"></i> Documenti Richiesti</h3>
+                    <div class="form-group">
+                        <label>Documento d'Identità:</label>
+                        <input type="file" name="documentoIdentita" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Codice Fiscale:</label>
+                        <input type="file" name="codiceFiscaleDoc" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Permesso di Soggiorno (se applicabile):</label>
+                        <input type="file" name="permessoSoggiorno">
+                    </div>
+                </div>
+
+                <!-- Firma -->
+                <div class="form-section">
+                    <h3><i class="fas fa-signature"></i> Firma del Lavoratore</h3>
+                    <div class="form-group">
+                        <label>Data:</label>
+                        <input type="date" name="dataFirma" required>
+                    </div>
+                    <canvas id="firma" width="500" height="200"></canvas>
+                    <div class="button-group">
+                        <button type="button" onclick="pulisciFirma()">Pulisci Firma</button>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit">Salva</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pre-assunzione Section -->
+    <div id="preassunzione" class="section">
+        <div class="card">
+            <h3><i class="fas fa-file-signature"></i> Pre-assunzione</h3>
+            <div id="datiPreAssunzione"></div>
+            <div class="button-group">
+                <button onclick="generaDocumenti()">Genera Documenti</button>
+                <button onclick="inviaDocumenti()">Invia al Consulente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documenti Section -->
+    <div id="documenti" class="section">
+        <div class="card">
+            <h3><i class="fas fa-folder"></i> Documenti</h3>
+            <div class="upload-area">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Trascina qui le buste paga o clicca per caricare</p>
+                <input type="file" id="uploadBustePaga" multiple accept=".pdf" style="display: none;">
+            </div>
+            <div id="listaDocumenti" class="document-list"></div>
+        </div>
+    </div>
+
+    <!-- Panorama Section -->
+    <div id="panorama" class="section">
+        <div class="card">
+            <h3><i class="fas fa-chart-bar"></i> Panoramica Dipendenti</h3>
+            <div class="search-bar">
+                <input type="text" id="cercaDipendente" placeholder="Cerca dipendente...">
+            </div>
+            <table id="tabellaPersonale">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Codice Fiscale</th>
+                        <th>Stato</th>
+                        <th>Scadenze</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- CV Section -->
+    <div id="cv" class="section">
+        <div class="card">
+            <h3><i class="fas fa-file-alt"></i> Gestione CV</h3>
+            <div class="upload-area">
+                <i class="fas fa-file-upload"></i>
+                <p>Carica il tuo CV qui</p>
+                <input type="file" id="uploadCV" accept=".pdf,.doc,.docx" style="display: none;">
+            </div>
+            <div id="listaCv" class="cv-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // Navegación
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Gestión del formulario
+        document.getElementById('anagraficaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const datos = Object.fromEntries(formData);
+            localStorage.setItem('datosEmpleado', JSON.stringify(datos));
+            alert('Dati salvati con successo');
+        });
+
+        // Sistema de firma digital
+        const canvas = document.getElementById('firma');
+        const ctx = canvas.getContext('2d');
+        let dibujando = false;
+
+        canvas.addEventListener('mousedown', iniziaFirma);
+        canvas.addEventListener('mousemove', disegnaFirma);
+        canvas.addEventListener('mouseup', terminaFirma);
+        canvas.addEventListener('mouseout', terminaFirma);
+
+        function iniziaFirma(e) {
+            dibujando = true;
+            disegnaFirma(e);
+        }
+
+        function disegnaFirma(e) {
+            if (!dibujando) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function terminaFirma() {
+            dibujando = false;
+            ctx.beginPath();
+        }
+
+        function pulisciFirma() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+        }
+
+        // Gestión de documentos
+        function generaDocumenti() {
+            const datos = JSON.parse(localStorage.getItem('datosEmpleado'));
+            if (!datos) {
+                alert('Completare prima i dati personali');
+                return;
+            }
+            alert('Documenti generati con successo');
+        }
+
+        function inviaDocumenti() {
+            alert('Documenti inviati al consulente');
+        }
+
+        // Gestión de CV
+        document.getElementById('uploadCV').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const cv = e.target.files[0];
+                const listaCv = document.getElementById('listaCv');
+                listaCv.innerHTML += `
+                    <div class="cv-item">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>${cv.name}</span>
+                    </div>
+                `;
+            }
+        });
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar datos guardados
+            const datos = localStorage.getItem('datosEmpleado');
+            if (datos) {
+                const datosObj = JSON.parse(datos);
+                Object.entries(datosObj).forEach(([key, value]) => {
+                    const input = document.querySelector(`[name="${key}"]`);
+                    if (input) input.value = value;
+                });
+            }
+
+            // Configurar áreas de carga
+            document.querySelectorAll('.upload-area').forEach(area => {
+                area.addEventListener('click', () => {
+                    area.querySelector('input[type="file"]').click();
+                });
+            });
+
+            // Mostrar campos condicionales
+            document.querySelector('[name="tipoContratto"]').addEventListener('change', function(e) {
+                document.getElementById('durataDeterminato').style.display = 
+                    e.target.value === 'determinato' ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
